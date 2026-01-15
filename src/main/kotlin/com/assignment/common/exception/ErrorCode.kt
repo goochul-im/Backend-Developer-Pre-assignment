@@ -16,6 +16,13 @@ enum class ErrorCode(
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "유효하지 않은 토큰입니다"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_002", "만료된 토큰입니다"),
 
+    // Thread
+    THREAD_NOT_FOUND(HttpStatus.NOT_FOUND, "THREAD_001", "스레드를 찾을 수 없습니다"),
+    THREAD_ACCESS_DENIED(HttpStatus.FORBIDDEN, "THREAD_002", "해당 스레드에 대한 접근 권한이 없습니다"),
+
+    // Chat
+    CHAT_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAT_001", "대화를 찾을 수 없습니다"),
+
     // Common
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "COMMON_001", "입력값이 올바르지 않습니다"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_002", "서버 내부 오류가 발생했습니다")

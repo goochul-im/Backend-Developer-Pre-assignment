@@ -1,5 +1,6 @@
 package com.assignment.common.infrastructure.security
 
+import com.assignment.user.domain.Role
 import com.assignment.user.domain.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -10,6 +11,10 @@ class CustomUserDetails(
 ) : UserDetails {
 
     fun getUser(): User = user
+
+    fun getUserId(): Long = user.id
+
+    fun getRole(): Role = user.role
 
     override fun getAuthorities(): Collection<GrantedAuthority> =
         listOf(SimpleGrantedAuthority("ROLE_${user.role.name}"))

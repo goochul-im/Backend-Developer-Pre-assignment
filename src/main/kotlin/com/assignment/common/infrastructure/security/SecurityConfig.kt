@@ -1,5 +1,6 @@
 package com.assignment.common.infrastructure.security
 
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -8,13 +9,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtAuthenticationFilter: JwtAuthenticationFilter
+    private val jwtAuthenticationFilter: JwtAuthenticationFilter,
+    private val customAuthenticationEntryPoint: AuthenticationEntryPoint,
+    private val customAccessDeniedHandler: AccessDeniedHandler
 ) {
 
     @Bean
@@ -27,6 +32,10 @@ class SecurityConfig(
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated()
+            }
+            .exceptionHandling {
+                it.authenticationEntryPoint(customAuthenticationEntryPoint)
+                it.accessDeniedHandler(customAccessDeniedHandler)
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
