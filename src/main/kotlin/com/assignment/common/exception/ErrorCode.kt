@@ -23,6 +23,11 @@ enum class ErrorCode(
     // Chat
     CHAT_NOT_FOUND(HttpStatus.NOT_FOUND, "CHAT_001", "대화를 찾을 수 없습니다"),
 
+    // Feedback
+    FEEDBACK_NOT_FOUND(HttpStatus.NOT_FOUND, "FEEDBACK_001", "피드백을 찾을 수 없습니다"),
+    FEEDBACK_ACCESS_DENIED(HttpStatus.FORBIDDEN, "FEEDBACK_002", "해당 대화에 대한 피드백 권한이 없습니다"),
+    FEEDBACK_ALREADY_EXISTS(HttpStatus.CONFLICT, "FEEDBACK_003", "이미 해당 대화에 피드백을 생성했습니다"),
+
     // Common
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "COMMON_001", "입력값이 올바르지 않습니다"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_002", "서버 내부 오류가 발생했습니다")
