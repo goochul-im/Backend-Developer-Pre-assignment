@@ -29,7 +29,7 @@ class ChatService(
         // 스레드 결정: 기존 스레드 사용 또는 새 스레드 생성
         val thread = resolveThread(command.userId, now)
 
-        // 대화 이력 조회 (AI 컨텍스트용)
+        // 컨텍스트 조회
         val conversationHistory = chatRepository.findByThreadId(thread.id!!)
 
         // AI 응답 생성
