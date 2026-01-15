@@ -2,7 +2,7 @@ package com.assignment.feedback.domain
 
 import java.time.OffsetDateTime
 
-data class Feedback(
+class Feedback(
     val id: Long? = null,
     val userId: Long,
     val chatId: Long,
@@ -10,7 +10,16 @@ data class Feedback(
     val status: FeedbackStatus = FeedbackStatus.PENDING,
     val createdAt: OffsetDateTime = OffsetDateTime.now()
 ) {
-    fun updateStatus(newStatus: FeedbackStatus): Feedback = copy(status = newStatus)
+    fun updateStatus(newStatus: FeedbackStatus): Feedback {
+        return Feedback(
+            id = this.id,
+            userId = this.userId,
+            chatId = this.chatId,
+            isPositive = this.isPositive,
+            status = newStatus,
+            createdAt = this.createdAt
+        )
+    }
 }
 
 enum class FeedbackStatus {

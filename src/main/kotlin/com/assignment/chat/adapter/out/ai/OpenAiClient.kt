@@ -25,18 +25,20 @@ class OpenAiClient(
 
         val messages = buildMessages(question, conversationHistory)
 
-        val option = OpenAiChatOptions.builder()
-            .model(model)
-            .build()
+        val optionBuilder = OpenAiChatOptions.builder()
+        if (!model.isNullOrBlank()) {
+            optionBuilder.model(model)
+        }
+        val option = optionBuilder.build()
 
         val prompt = Prompt(messages, option)
 
-        val response = chatModel.call(
-            prompt
-        )
+        val response = chatModel.call(prompt)
+
+        val answer = response.result.output.text ?: "응답을 생성할 수 없습니다."
 
         return AiClient.AiResponse(
-            answer = response.result.output.text.toString()
+            answer = answer
         )
     }
 

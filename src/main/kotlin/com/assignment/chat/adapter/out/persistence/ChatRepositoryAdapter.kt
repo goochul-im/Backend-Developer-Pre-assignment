@@ -3,6 +3,7 @@ package com.assignment.chat.adapter.out.persistence
 import com.assignment.chat.application.port.out.ChatRepository
 import com.assignment.chat.domain.Chat
 import org.springframework.stereotype.Repository
+import java.time.OffsetDateTime
 
 @Repository
 class ChatRepositoryAdapter(
@@ -33,5 +34,14 @@ class ChatRepositoryAdapter(
 
     override fun deleteByThreadId(threadId: Long) {
         chatJpaRepository.deleteByThreadId(threadId)
+    }
+
+    override fun countByCreatedAtBetween(start: OffsetDateTime, end: OffsetDateTime): Long {
+        return chatJpaRepository.countByCreatedAtBetween(start, end)
+    }
+
+    override fun findByCreatedAtBetween(start: OffsetDateTime, end: OffsetDateTime): List<Chat> {
+        return chatJpaRepository.findByCreatedAtBetween(start, end)
+            .map { it.toDomain() }
     }
 }

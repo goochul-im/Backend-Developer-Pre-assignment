@@ -2,7 +2,7 @@ package com.assignment.chat.domain
 
 import java.time.OffsetDateTime
 
-data class Chat(
+class Chat(
     val id: Long? = null,
     val threadId: Long,
     val question: String,

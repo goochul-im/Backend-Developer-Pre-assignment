@@ -31,6 +31,7 @@ class SecurityConfig(
                 auth
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers("/api/reports/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             }
             .exceptionHandling {

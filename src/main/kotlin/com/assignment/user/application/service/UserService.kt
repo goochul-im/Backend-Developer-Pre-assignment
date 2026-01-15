@@ -5,9 +5,11 @@ import com.assignment.common.exception.ErrorCode
 import com.assignment.user.application.port.`in`.GetUserUseCase
 import com.assignment.user.application.port.`in`.LoginUseCase
 import com.assignment.user.application.port.`in`.SignUpUseCase
+import com.assignment.user.application.port.out.LoginHistoryRepository
 import com.assignment.user.application.port.out.PasswordEncoder
 import com.assignment.user.application.port.out.TokenProvider
 import com.assignment.user.application.port.out.UserRepository
+import com.assignment.user.domain.LoginHistory
 import com.assignment.user.domain.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
+    private val loginHistoryRepository: LoginHistoryRepository
 ) : SignUpUseCase, LoginUseCase, GetUserUseCase {
 
     @Transactional
@@ -35,6 +38,7 @@ class UserService(
         return userRepository.save(user)
     }
 
+    @Transactional
     override fun login(command: LoginUseCase.LoginCommand): LoginUseCase.LoginResult {
         val user = userRepository.findByEmail(command.email)
             ?: throw BusinessException(ErrorCode.INVALID_CREDENTIALS)
@@ -42,6 +46,8 @@ class UserService(
         if (!passwordEncoder.matches(command.password, user.password)) {
             throw BusinessException(ErrorCode.INVALID_CREDENTIALS)
         }
+
+        loginHistoryRepository.save(LoginHistory(userId = user.id))
 
         val token = tokenProvider.createToken(user.email, user.role.name)
         return LoginUseCase.LoginResult(
